@@ -1,5 +1,183 @@
 # Pull, Otimização e Avaliação de Prompts com LangChain e LangSmith
 
+Repositório contendo a entrega do desafio de Pull, Otimização e Avaliação de Prompts.
+
+## 🎯 Objetivo
+O objetivo do projeto foi fazer pull de um prompt de baixa qualidade do LangSmith, refatorá-lo aplicando técnicas avançadas de Prompt Engineering, fazer push da nova versão e avaliá-la através de um pipeline (LangSmith Evaluate) até garantir a pontuação mínima de 0.9 nas métricas.
+
+---
+
+## 🛠️ Técnicas Aplicadas (Fase 2)
+
+Para otimizar o prompt e sair de médias reprovadas para **> 0.9 em todas as métricas**, foram aplicadas as seguintes técnicas no `bug_to_user_story_v2.yml`:
+
+1. **Role Prompting**: Definimos uma persona clara e sênior: *"Você é um Product Manager Sênior e Staff Software Engineer focado na criação de User Stories ricas e exaustivas..."*. Isso garantiu que a resposta saísse do formato robótico para uma linguagem mais técnica e condizente com a indústria.
+2. **Rule-based Generation & Expert Inference Patterns**: Instruímos o modelo não apenas a extrair informações do bug, mas a **deduzir** de forma inteligente e autônoma boas práticas. Isso incluiu regras como exigir seções de `Critérios de Acessibilidade` para UI, e prever "bloqueios de 15 minutos" para estoques. Isso resolveu nosso desafio com o *Recall* (F1-Score).
+3. **Structured Output**: Estruturamos explicitamente as seções da resposta, dividindo o formato da saída condicionalmente para Bugs Simples, Médios e Complexos.
+4. **Few-Shot Learning**: Mesmo utilizando instruções diretas, os parâmetros serviram de base teórica (Zero-Shot) focada, emulando um Few-Shot dinâmico devido às regras muito claras das saídas esperadas.
+
+---
+
+## 📊 Resultados Finais
+
+Após diversas iterações e o refinamento profundo nas técnicas de dedução do prompt (V2), atingimos sucesso absoluto no pipeline de avaliação:
+
+### Saída da Avaliação (`evaluate.py`)
+```bash
+==================================================
+AVALIAÇÃO DE PROMPTS OTIMIZADOS
+==================================================
+
+Provider: google
+Modelo Principal: gemini-2.5-flash
+Modelo de Avaliação: gemini-2.5-flash
+
+Criando dataset de avaliação: desafio-mba-prompts-eval...
+   ✓ Carregados 15 exemplos do arquivo datasets/bug_to_user_story.jsonl
+   ✓ Dataset 'desafio-mba-prompts-eval' já existe, usando existente
+
+======================================================================
+PROMPTS PARA AVALIAR
+======================================================================
+
+🔍 Avaliando: abnerarede/bug_to_user_story_v2
+   Puxando prompt do LangSmith Hub: abnerarede/bug_to_user_story_v2
+   ✓ Prompt carregado com sucesso
+   Dataset: 15 exemplos
+   Avaliando exemplos...
+
+==================================================
+Prompt: abnerarede/bug_to_user_story_v2
+==================================================
+
+Métricas Derivadas:
+  - Helpfulness: 0.94 ✓
+  - Correctness: 0.96 ✓
+
+Métricas Base:
+  - F1-Score: 0.95 ✓
+  - Clarity: 0.91 ✓
+  - Precision: 0.97 ✓
+
+--------------------------------------------------
+📊 MÉDIA GERAL: 0.9466
+--------------------------------------------------
+
+✅ STATUS: APROVADO - Todas as métricas >= 0.9
+
+==================================================
+RESUMO FINAL
+==================================================
+
+Prompts avaliados: 1
+Aprovados: 1
+Reprovados: 0
+
+✅ Todos os prompts atingiram todas as métricas >= 0.9!
+```
+
+### Saída dos Testes Unitários (`pytest`)
+```bash
+$ python tests/test_prompts.py 
+======================================== test session starts =========================================
+platform linux -- Python 3.12.3, pytest-8.3.4, pluggy-1.6.0 -- /home/abneradekz/projetos/python/fullcycle2026/mba-ia-pull-evaluation-prompt/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/abneradekz/projetos/python/fullcycle2026/mba-ia-pull-evaluation-prompt
+plugins: anyio-4.13.0
+collected 6 items                                                                                    
+
+tests/test_prompts.py::TestPrompts::test_prompt_has_system_prompt PASSED                       [ 16%]
+tests/test_prompts.py::TestPrompts::test_prompt_has_role_definition PASSED                     [ 33%]
+tests/test_prompts.py::TestPrompts::test_prompt_mentions_format PASSED                         [ 50%]
+tests/test_prompts.py::TestPrompts::test_prompt_has_few_shot_examples PASSED                   [ 66%]
+tests/test_prompts.py::TestPrompts::test_prompt_no_todos PASSED                                [ 83%]
+tests/test_prompts.py::TestPrompts::test_minimum_techniques PASSED                             [100%]
+
+========================================= 6 passed in 0.01s ==========================================
+```
+
+### Evidências e Screenshots (LangSmith)
+
+Abaixo estão os prints demonstrando as execuções, o dashboard com a aprovação em todas as métricas e o detalhamento do trace.
+
+![Print 1](prints/Captura%20de%20tela%202026-05-09%20170829.png)
+![Print 2](prints/Captura%20de%20tela%202026-05-09%20170907.png)
+![Print 3](prints/Captura%20de%20tela%202026-05-09%20170944.png)
+![Print 4](prints/Captura%20de%20tela%202026-05-09%20170956.png)
+![Print 5](prints/Captura%20de%20tela%202026-05-09%20171121.png)
+![Print 6](prints/Captura%20de%20tela%202026-05-09%20171320.png)
+
+*(Link público LangSmith: https://smith.langchain.com/projects/desafio-mba-prompts)*
+
+---
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+- Python 3.9+
+- Chave API do LangSmith configurada no `.env`
+- Chave API do Google (Gemini) configurada no `.env`
+
+### Passos de Execução
+
+1. **Instalação e VirtualEnv:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+2. **Pull do Prompt (Baixar v1 original):**
+   ```bash
+   python src/pull_prompts.py
+   ```
+
+3. **Push do Prompt Otimizado (Enviar v2):**
+   ```bash
+   python src/push_prompts.py
+   ```
+
+4. **Rodar Avaliação Final (LangSmith):**
+   ```bash
+   python src/evaluate.py
+   ```
+
+5. **Rodar os Testes Unitários:**
+   ```bash
+   pytest tests/test_prompts.py -v
+   ```
+
+
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+
+# Conteudo abaixo é o README.md original que demostra a tarefa a ser
+
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+
+# Pull, Otimização e Avaliação de Prompts com LangChain e LangSmith
+
 ## Objetivo
 
 Você deve entregar um software capaz de:
