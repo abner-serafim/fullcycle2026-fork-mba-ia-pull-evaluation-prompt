@@ -107,7 +107,7 @@ Abaixo estão os prints demonstrando as execuções, o dashboard com a aprovaç�
 ![Print 5](prints/Captura%20de%20tela%202026-05-09%20171121.png)
 ![Print 6](prints/Captura%20de%20tela%202026-05-09%20171320.png)
 
-*(Link público LangSmith: https://smith.langchain.com/projects/desafio-mba-prompts)*
+*(Link público LangSmith: https://smith.langchain.com/hub/abnerarede/bug_to_user_story_v2)*
 
 ---
 
