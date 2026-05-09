@@ -100,12 +100,29 @@ tests/test_prompts.py::TestPrompts::test_minimum_techniques PASSED              
 
 Abaixo estão os prints demonstrando as execuções, o dashboard com a aprovação em todas as métricas e o detalhamento do trace.
 
-![Print 1](prints/Captura%20de%20tela%202026-05-09%20170829.png)
-![Print 2](prints/Captura%20de%20tela%202026-05-09%20170907.png)
-![Print 3](prints/Captura%20de%20tela%202026-05-09%20170944.png)
-![Print 4](prints/Captura%20de%20tela%202026-05-09%20170956.png)
-![Print 5](prints/Captura%20de%20tela%202026-05-09%20171121.png)
-![Print 6](prints/Captura%20de%20tela%202026-05-09%20171320.png)
+1. Rodando o script de evaluate parte 1
+   ---
+   ![Print 1](prints/Captura%20de%20tela%202026-05-09%20170829.png)
+   ---
+2. Rodando o script de evaluate parte 2
+   ---
+   ![Print 2](prints/Captura%20de%20tela%202026-05-09%20170907.png)
+   ---
+3. Rodando o script de evaluate parte 3
+   ---
+   ![Print 3](prints/Captura%20de%20tela%202026-05-09%20170944.png)
+   ---
+4. Rodando o script de testes unitários
+   ---
+   ![Print 4](prints/Captura%20de%20tela%202026-05-09%20170956.png)
+   ---
+4. LangSmath imagem 1
+   ---
+   ![Print 5](prints/Captura%20de%20tela%202026-05-09%20171121.png)
+   ---
+5. LangSmath imagem 2
+   ---
+   ![Print 6](prints/Captura%20de%20tela%202026-05-09%20171320.png)
 
 *(Link público LangSmith: https://smith.langchain.com/hub/abnerarede/bug_to_user_story_v2)*
 
